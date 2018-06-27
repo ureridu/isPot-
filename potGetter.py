@@ -33,8 +33,10 @@ headers = {
             'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36}',
             }
 bad = []
+final = pd.DataFrame()
 
 for num in range(67434)[::1000]:
+    print(num)
     time.sleep(1)
     url = url1 + str(num) + url2 + str(numDisp) + url3
     while 1:
@@ -61,7 +63,7 @@ for num in range(67434)[::1000]:
         data = pd.DataFrame()
 
         for i, res in enumerate(results):
-            print(i)
+
             try:
                 inner = pd.DataFrame([[None, None, None]], columns=['Data', 'Text', 'Pics'])
 
@@ -77,9 +79,11 @@ for num in range(67434)[::1000]:
                 data = pd.concat([data, inner])
             except Exception as e:
                 print(e)
+
+        final = pd.concat([final, data])
     else:
         bad.append(url)
 
 
-    with pd.ExcelWriter('Pots.xlsx') as writer:
-        data.to_excel(writer)
+with pd.ExcelWriter('Pots.xlsx') as writer:
+    final.to_excel(writer)
